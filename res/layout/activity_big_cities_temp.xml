@@ -1,0 +1,340 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    
+    android:layout_height="wrap_content" >
+<RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.weatherdetector.activities.PakistanCitiesTemperature" >
+    <RelativeLayout android:id="@+id/relIslambad"
+        android:layout_width="wrap_content"
+        android:background="#e5e5e5"
+        android:layout_height="wrap_content">
+          <TextView
+        android:id="@+id/tvislamabad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+  		
+        android:layout_marginTop="21dp"
+       android:layout_marginLeft="15dp"
+        android:text="Islamabad"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+           <ProgressBar
+      android:id="@+id/progressBar1"
+      style="?android:attr/progressBarStyleLarge"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      
+      android:layout_alignTop="@+id/tvislamabad"
+      android:layout_centerHorizontal="true" />
+          <ImageView
+        android:id="@+id/imgislamabad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvislamabad"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="28dp"
+        android:layout_marginBottom="12dp"
+         />
+
+          <TextView
+              android:id="@+id/tvtempIslambad"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:layout_below="@+id/tvislamabad"
+              android:layout_marginLeft="15dp"
+              android:text=""
+          
+              android:layout_marginBottom="12dp"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+          
+           <ImageView
+             android:id="@+id/degCisl"
+             android:layout_width="40dp"
+             android:layout_height="40dp"
+             android:layout_below="@+id/tvislamabad"
+             android:layout_toRightOf="@+id/tvtempIslambad"
+             android:src="@drawable/btn_c_unit_pressed" />
+         <ImageView
+        android:id="@+id/degFisl"
+        android:layout_width="40dp"
+             android:layout_height="40dp"
+             android:layout_below="@+id/tvislamabad"
+            android:layout_toRightOf="@+id/degCisl"
+        
+      
+      
+        android:layout_marginLeft="3dp"
+       android:src="@drawable/btn_f_unit_pressed"
+   android:layout_alignTop="@+id/tvtempIslambad"
+       />
+
+        
+          
+    </RelativeLayout>
+    <RelativeLayout android:id="@+id/relLahore"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/relIslambad"
+        android:background="#acacac"
+        android:layout_height="wrap_content">
+          <TextView
+        android:id="@+id/tvLahore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+  
+             android:layout_marginTop="21dp"
+       android:layout_marginLeft="15dp"
+      
+        android:text="Lahore"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+          <ProgressBar
+      android:id="@+id/progressBar2"
+      style="?android:attr/progressBarStyleLarge"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      
+      android:layout_alignTop="@+id/tvLahore"
+      android:layout_centerHorizontal="true" />
+          <ImageView
+        android:id="@+id/imgisLahore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvLahore"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="28dp"
+      />
+
+          <TextView
+              android:id="@+id/tvtempLahore"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:layout_below="@+id/tvLahore"
+              android:text=""
+               android:layout_marginBottom="8dp"
+              android:layout_marginLeft="15dp"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+             <ImageView
+            android:id="@+id/degClhr"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+   
+      android:layout_marginBottom="12dp"
+            android:src="@drawable/btn_c_unit_pressed"
+        android:layout_toRightOf="@+id/tvtempLahore"
+             android:layout_below="@+id/tvLahore"
+           />
+         <ImageView
+        android:id="@+id/degFlhr"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/tvLahore"
+        
+        android:layout_toRightOf="@+id/degClhr"
+        android:layout_marginLeft="3dp"
+        android:layout_marginBottom="12dp"
+       android:src="@drawable/btn_f_unit_pressed"
+       />
+       
+          
+    </RelativeLayout>
+     <RelativeLayout android:id="@+id/relKarachi"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/relLahore"
+         android:background="#e5e5e5"
+        android:layout_height="wrap_content">
+          <TextView
+        android:id="@+id/tvKarachi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+  
+             android:layout_marginTop="21dp"
+       android:layout_marginLeft="15dp"
+       
+        android:text="Karachi"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+          <ProgressBar
+      android:id="@+id/progressBar3"
+      style="?android:attr/progressBarStyleLarge"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      
+      android:layout_alignTop="@+id/tvKarachi"
+      android:layout_centerHorizontal="true" />
+          <ImageView
+        android:id="@+id/imgKarachi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvKarachi"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="12dp"
+        android:layout_marginRight="28dp"
+         />
+
+          <TextView
+              android:id="@+id/tvtempKarachi"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:layout_below="@+id/tvKarachi"
+              android:layout_marginLeft="15dp"
+               android:layout_marginBottom="12dp"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+          <ImageView
+            android:id="@+id/degCkch"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+   
+     
+            android:src="@drawable/btn_c_unit_pressed"
+        android:layout_toRightOf="@+id/tvtempKarachi"
+             android:layout_below="@+id/tvKarachi"
+           />
+         <ImageView
+        android:id="@+id/degFkch"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/tvKarachi"
+       
+        android:layout_toRightOf="@+id/degCkch"
+        android:layout_marginLeft="3dp"
+       android:src="@drawable/btn_f_unit_pressed"
+       />
+          
+    </RelativeLayout>
+    
+     <RelativeLayout android:id="@+id/relqueta"
+        android:layout_width="wrap_content"
+        android:background="#acacac"
+        android:layout_below="@+id/relKarachi"
+        android:layout_height="wrap_content">
+          <TextView
+        android:id="@+id/tvQueta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+  
+             android:layout_marginTop="21dp"
+       android:layout_marginLeft="15dp"
+    
+        android:text="Queta"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+            <ProgressBar
+      android:id="@+id/progressBar4"
+      style="?android:attr/progressBarStyleLarge"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      
+      android:layout_alignTop="@+id/tvQueta"
+      android:layout_centerHorizontal="true" />
+          
+          <ImageView
+        android:id="@+id/imgqueta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvQueta"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="28dp"
+         />
+
+          <TextView
+              android:id="@+id/tvtempqueta"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:layout_below="@+id/tvQueta"
+              android:layout_marginLeft="15dp"
+               android:layout_marginBottom="8dp"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+          <ImageView
+            android:id="@+id/degCqut"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+     
+            android:src="@drawable/btn_c_unit_pressed"
+        android:layout_toRightOf="@+id/tvtempqueta"
+             android:layout_below="@+id/tvQueta"
+           />
+         <ImageView
+        android:id="@+id/degFqut"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/tvQueta"
+   
+        android:layout_toRightOf="@+id/degCqut"
+        android:layout_marginLeft="3dp"
+       android:src="@drawable/btn_f_unit_pressed"
+       />
+    </RelativeLayout>
+
+     <RelativeLayout android:id="@+id/relpishawar"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/relqueta"
+         android:background="#e5e5e5"
+        android:layout_height="wrap_content">
+          <TextView
+        android:id="@+id/tvpishawar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+  
+            android:layout_marginTop="21dp"
+       android:layout_marginLeft="15dp"
+  
+        android:text="Pishawar"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+           <ProgressBar
+      android:id="@+id/progressBar5"
+      style="?android:attr/progressBarStyleLarge"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      
+      android:layout_alignTop="@+id/tvpishawar"
+      android:layout_centerHorizontal="true" />
+          <ImageView
+        android:id="@+id/imgpishawar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvpishawar"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="28dp"
+         />
+
+          <TextView
+              android:id="@+id/tvtemppishawar"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentLeft="true"
+              android:layout_below="@+id/tvpishawar"
+              android:layout_marginLeft="15dp"
+               android:layout_marginBottom="8dp"
+              android:textAppearance="?android:attr/textAppearanceMedium" />
+           <ImageView
+            android:id="@+id/degCpsh"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+      
+            android:src="@drawable/btn_c_unit_pressed"
+        android:layout_toRightOf="@+id/tvtemppishawar"
+             android:layout_below="@+id/tvpishawar"
+           />
+         <ImageView
+        android:id="@+id/degFpsh"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        
+        android:layout_below="@+id/tvpishawar"
+       
+        android:layout_toRightOf="@+id/degCpsh"
+        android:layout_marginLeft="3dp"
+       android:src="@drawable/btn_f_unit_pressed"
+       />
+          
+    </RelativeLayout>
+	
+</RelativeLayout>
+</ScrollView>

@@ -1,0 +1,185 @@
+
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#ffffff"
+    tools:context="com.weatherdetector.activities.MainActivity" >
+
+     <RelativeLayout
+         android:id="@+id/toprel"
+         android:layout_width="wrap_content"
+       
+         android:layout_height="wrap_content" >
+         <RelativeLayout
+                    android:id="@+id/search_rl"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/map_rl"
+                    android:layout_alignTop="@+id/map_rl"
+                    android:background="@drawable/mein_bauhaus_search_bg" >
+
+                    <ImageButton
+                        android:id="@+id/btnShowLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="6dip"
+                        android:background="@drawable/mein_bauhaus_search_localize_icon" />
+                     
+
+                    <EditText
+                        android:id="@+id/edtplace"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="6dip"
+                        android:layout_marginLeft="6dip"
+                        android:layout_marginRight="6dip"
+                        android:layout_marginTop="6dip"
+                        android:layout_toLeftOf="@+id/btnShowLocation"
+                        android:background="@drawable/storefinder_edittext"
+                        android:drawableLeft="@drawable/mein_bauhaus_search_magnifier_icon"
+                        android:drawablePadding="5dip"
+                        android:hint="Enter City Name"
+                        android:imeOptions="actionDone"
+                        android:paddingBottom="5dip"
+                        android:paddingLeft="5dip"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dip"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="#ffffff"
+                        android:textColorHint="#ffffff" />
+
+                    <ImageView
+                        android:id="@+id/btnclear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@+id/edtplace"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dip"
+                        android:src="@drawable/clear_fields" />
+     
+                  
+                </RelativeLayout>
+               
+   
+                    <ImageView
+        android:id="@+id/btndone"
+        android:layout_width="55dp"
+        android:layout_height="53dp"
+       android:background="@drawable/btn_search_pressed"
+     android:layout_toRightOf="@+id/search_rl"
+        />
+
+ 
+        
+
+    <ImageView
+        android:id="@+id/degF"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/btndone"
+        android:layout_marginTop="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="3dp"
+       android:background="@drawable/btn_f_unit_pressed"
+       />
+    <ImageView
+            android:id="@+id/degC"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+      android:layout_marginTop="25dp"
+            android:background="@drawable/btn_c_unit_pressed"
+        android:layout_toLeftOf="@+id/degF"
+             android:layout_below="@+id/btndone"
+           />
+
+    <TextView
+        android:id="@+id/tvtemp"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignBaseline="@+id/degC"
+        android:layout_alignBottom="@+id/degC"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="25dp"
+        android:text="Temperature"
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+ 
+
+        </RelativeLayout>
+
+     <RelativeLayout android:id="@+id/relweathers"
+         android:layout_width="wrap_content"
+      android:layout_below="@+id/toprel"
+      android:layout_centerInParent="true"
+         android:layout_height="wrap_content">
+
+         <ImageView
+             android:id="@+id/imageView1"
+             android:layout_width="200dp"
+             android:layout_height="200dp"
+             android:layout_marginTop="15dp"
+             android:layout_alignParentLeft="true"
+             android:layout_alignParentTop="true"
+             />
+
+     </RelativeLayout>
+      <RelativeLayout  
+          android:id="@+id/othertempDetail"
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+      android:layout_below="@+id/relweathers"
+       android:layout_alignParentBottom="true"
+          android:layout_alignParentLeft="true"
+          android:layout_marginTop="10dp"
+         
+    >
+          
+          <TextView android:id="@+id/tvtempatmosphere"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+         android:layout_marginTop="8dp"
+         android:textSize="20sp"
+        android:textStyle="bold"
+        />
+      <TextView android:id="@+id/tvtempVisibility"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+         android:textSize="20sp"
+          android:layout_marginTop="8dp"
+        android:layout_below="@+id/tvtempatmosphere"
+        android:textStyle="bold"
+        />
+             <TextView android:id="@+id/tvwindspeed"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+         android:textSize="20sp"
+         android:layout_marginTop="8dp"
+        android:layout_below="@+id/tvtempVisibility"
+        android:textStyle="bold"
+        />
+             <TextView
+        android:id="@+id/tvtemphumidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvwindspeed"
+           android:layout_marginTop="8dp"
+       android:layout_alignParentBottom="true"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+      </RelativeLayout>
+
+</RelativeLayout>
