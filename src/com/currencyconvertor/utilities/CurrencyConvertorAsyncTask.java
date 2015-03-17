@@ -24,6 +24,10 @@ import org.json.JSONObject;
 import com.currencyconvertor.databases.DbHandler;
 import com.currencyconvertor.entities.Currency;
 
+
+import com.currencyconvertor.interfaces.JsonNotification;
+
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -46,7 +50,7 @@ public class CurrencyConvertorAsyncTask extends AsyncTask<String, Void, Void> {
 	private Context context;
 	private String url;
 	private DbHandler db;
-	
+	JsonNotification mJsonNotification;
 	private JSONObject mJSONObject;
 	private ProgressDialog mProgressDialog;
 
@@ -146,11 +150,22 @@ public class CurrencyConvertorAsyncTask extends AsyncTask<String, Void, Void> {
 		super.onPostExecute(result);
 
 		mProgressDialog.dismiss();
+			try {
+			
+			this.mJsonNotification.setnotify();
+			 
 
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			//Toast.makeText(context, "No Result found please type city Name", Toast.LENGTH_LONG).show();
+		}
 		
 	
 	}
 	
-
-	
+	public void setApiResulListener(JsonNotification listner){
+		this.mJsonNotification=listner;
+	}
 }

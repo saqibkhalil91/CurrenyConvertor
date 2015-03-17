@@ -1,11 +1,14 @@
 package com.currencyconvertor.entities;
 
+import android.content.Context;
+
 
 public class Currency {
 	private String contryname;
 	private String currencyvalue;
 	
 	private int id;
+	
 	public int getId() {
 		return id;
 	}

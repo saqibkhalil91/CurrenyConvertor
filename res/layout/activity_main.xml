@@ -37,6 +37,7 @@
              android:layout_centerHorizontal="true"
              android:ems="10"
              android:textSize="42sp"
+             android:text="1.00"
              android:gravity="center"
              android:layout_marginRight="15dip"
              android:layout_marginLeft="15dip"
