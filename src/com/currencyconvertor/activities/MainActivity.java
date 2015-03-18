@@ -68,17 +68,8 @@ public class MainActivity extends Activity {
 	private Dialog toDialog;
 	private RateAdapter fromAdapter;
 	private RateAdapter toAdapter;
-	
-	  private List ratesList; 
-	  private BigDecimal fromAmount; 
-	  private BigDecimal toAmount; 
-	  private String[] ratesArray;
-	  private boolean firstFetch;
-	  private Time lastUpdated; 
-	  private double value;
-	 
-
-	@Override
+	private EditText answerText;
+	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
@@ -90,16 +81,7 @@ public class MainActivity extends Activity {
 
 		final View view = this.findViewById(android.R.id.content);
 		final Activity activity = this;
-		
-		
-		
-		
-		firstFetch = true;
-		lastUpdated = new Time();
-		
-	   // checkConnectivity();
-        
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+		view.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			@Override
 			public void onGlobalLayout() {
 			    Rect r = new Rect();
@@ -158,7 +140,7 @@ public class MainActivity extends Activity {
 	        	@Override
 	        	public void afterTextChanged(Editable s) {
 	        		try {
-	        			value = Double.parseDouble(s.toString());
+	        			
 	        			calculateExchangeRate();
 	        		} catch(NumberFormatException e) {
 	        			// TODO Auto-generated catch block
@@ -215,7 +197,7 @@ public class MainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	//meathods
+
 	private void setViews() {
 			db = new DbHandler(this);
 			currencies = new ArrayList<Currency>();
@@ -261,24 +243,9 @@ public class MainActivity extends Activity {
 				
 				
 				fromList = new ListView(this);
-				
-				ratesList = new ArrayList(currencies.size());
 				fromList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-				
-		      /*  // Fill the songs array by using a for loop
-		        for(int i=0; i < currencies.size(); i++){
-		        	try {
-		        		ratesList.add(currencies.get(i).getContryname());
-		        	} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-		        }*/
-		        
-		        fromAdapter = new RateAdapter(this, R.layout.list_row, currencies, getResources(), fromSelected);
-
-				fromList.setAdapter(fromAdapter);
-				
+			    fromAdapter = new RateAdapter(this, R.layout.list_row, currencies, getResources(), fromSelected);
+			    fromList.setAdapter(fromAdapter);
 				fromList.setItemChecked(fromSelected, true);
 				
 				// Defining the item click listener for listView
@@ -312,9 +279,11 @@ public class MainActivity extends Activity {
 					new DialogInterface.OnClickListener() {
 
 						public void onClick(DialogInterface dialog, int which) {
+							currencies = db.getAllCurrencies();
 							fromRate = new BigDecimal(currencies.get(fromSelected).getCurrencyvalue());
 		       				fromInput.setText("1.00");
 		       				toRate = new BigDecimal(currencies.get(toSelected).getCurrencyvalue());
+		       				answerText.setText("0.54");
 		       				calculateExchangeRate();
 						}
 					});
@@ -359,8 +328,7 @@ public class MainActivity extends Activity {
 				double value = Double.parseDouble(fromInput.getText().toString());
 				double exchangeRate =  toRate.doubleValue() /fromRate.doubleValue();
 				double answer = value * exchangeRate;
-			
-				EditText answerText = (EditText) findViewById(R.id.answer);
+			 answerText = (EditText) findViewById(R.id.answer);
 				answerText.setText(String.format("%.2f", answer));
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -380,22 +348,8 @@ public class MainActivity extends Activity {
 	            });
 				
 				toList = new ListView(this);
-				
-				ratesList = new ArrayList(currencies.size());
 				toList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-				
-		        // Fill the songs array by using a for loop
-		        for(int i=0; i <currencies.size(); i++){
-		        	try {
-		        		ratesList.add(currencies.get(i).getContryname());
-		        	} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-		        }
-		        
-		        toAdapter = new RateAdapter(this, R.layout.list_row, currencies, getApplicationContext().getResources(), toSelected);
-
+				toAdapter = new RateAdapter(this, R.layout.list_row, currencies, getApplicationContext().getResources(), toSelected);
 				toList.setAdapter(toAdapter);
 				toList.setItemChecked(toSelected, true);
 				
