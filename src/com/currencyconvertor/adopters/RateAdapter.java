@@ -2,6 +2,7 @@ package com.currencyconvertor.adopters;
 
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+
 
 
 import com.currencyconvertor.activities.MainActivity;
@@ -36,11 +39,12 @@ public class RateAdapter extends ArrayAdapter {
 		this.selected = selected;
 	}
 
+	@SuppressLint("DefaultLocale")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		// retrieve the Person object binded at this position
-		
+		final Currency c = (Currency) getItem(position);
 		// A ViewHolder keeps references to children views to avoid unneccessary
 		// calls
 		// to findViewById() on each row.
@@ -65,28 +69,27 @@ public class RateAdapter extends ArrayAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		try{
-			final Currency c = (Currency) getItem(position);
+			
 			holder.label.setText(c.getContryname());
 
-			String mDrawableName = c.getContryname().toLowerCase() + "_flag";
-
-			int resID = res.getIdentifier(mDrawableName, "drawable",
-					MainActivity.PACKAGE_NAME);
-			holder.flag.setImageResource(resID);
-		}catch(Exception e)
-		{
-			
-			
-		}
+			 String mDrawableName = c.getContryname().toLowerCase() + "_flag";
+			 
+		        int resID = res.getIdentifier(mDrawableName , "drawable", MainActivity.PACKAGE_NAME);
+		        holder.flag.setImageResource(resID);
+		
 		// Bind the data efficiently with the holder.
 		
-
-		if (position == selected) {
-			holder.cbk.setChecked(true);
-		} else {
-			holder.cbk.setChecked(false);
+	
+			if (position == selected) {
+				holder.cbk.setChecked(true);
+			} else {
+				holder.cbk.setChecked(false);
+			}
+		}catch(Exception e)
+		{
+			e.getMessage();
+			
 		}
-
 		return convertView;
 	}
 

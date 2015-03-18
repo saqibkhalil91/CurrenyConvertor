@@ -2,30 +2,32 @@
 package com.currencyconvertor.activities;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.json.JSONArray;
 import org.json.JSONException;
-
-
-
-
-
-import com.currencyconvertor.activities.R;
 import com.currencyconvertor.adopters.RateAdapter;
 import com.currencyconvertor.databases.DbHandler;
 import com.currencyconvertor.entities.Currency;
 import com.currencyconvertor.interfaces.JsonNotification;
 import com.currencyconvertor.utilities.ConnectionDetector;
 import com.currencyconvertor.utilities.CurrencyConvertorAsyncTask;
-
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.text.Editable;
@@ -33,6 +35,7 @@ import android.text.TextWatcher;
 import android.text.format.Time;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -54,46 +57,42 @@ public class MainActivity extends Activity {
 	private CurrencyConvertorAsyncTask currencyConvertorApi;
 	private List<Currency> currencies;
 	public static String PACKAGE_NAME;
-	private List ratesList;
-	
 	private ListView fromList;
 	private ListView toList;
-	private String[] ratesArray;
-	
-	private BigDecimal fromAmount;
-	private BigDecimal toAmount;
-	
 	private BigDecimal fromRate;
 	private BigDecimal toRate;
-	
-	private boolean firstFetch;
-	
-	private double value;
-	
 	private int fromSelected;
 	private int toSelected;
-	
 	private EditText fromInput;
-	
 	private Dialog fromDialog;
 	private Dialog toDialog;
-	
 	private RateAdapter fromAdapter;
 	private RateAdapter toAdapter;
 	
-	private Time lastUpdated;
+	  private List ratesList; 
+	  private BigDecimal fromAmount; 
+	  private BigDecimal toAmount; 
+	  private String[] ratesArray;
+	  private boolean firstFetch;
+	  private Time lastUpdated; 
+	  private double value;
+	 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		setViews();
 		sendCurrencyApiRequest();
-		getCurrencies();
+		
 		fromSelected = 0;
 		toSelected = 1;
 
 		final View view = this.findViewById(android.R.id.content);
 		final Activity activity = this;
+		
+		
+		
 		
 		firstFetch = true;
 		lastUpdated = new Time();
@@ -201,6 +200,20 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		switch (item.getItemId()) {
+		
+		case R.id.refresh:
+			sendCurrencyApiRequest();
+			
+			break;
+
+		default:
+		}
+		return super.onOptionsItemSelected(item);
+	}
 	
 	//meathods
 	private void setViews() {
@@ -216,20 +229,23 @@ public class MainActivity extends Activity {
 				currencyConvertorApi = new CurrencyConvertorAsyncTask(this);
 
 				currencyConvertorApi.execute(null, null, null);
+				
+				currencyConvertorApi.setApiResulListener(new JsonNotification() {
+					
+					@Override
+					public void setnotify() {
+						// TODO Auto-generated method stub
+						currencies = db.getAllCurrencies();
+					}
+				});
+			}
+			else
+			{
+				offlineRates();
 			}
 		}
 
-		private void getCurrencies() {
-			
-			currencyConvertorApi.setApiResulListener(new JsonNotification() {
-				
-				@Override
-				public void setnotify() {
-					// TODO Auto-generated method stub
-					currencies = db.getAllCurrencies();
-				}
-			});
-		}
+		
 		
 		public void showSelectFrom(View v) {
 			if (fromDialog == null) {
@@ -284,6 +300,30 @@ public class MainActivity extends Activity {
 	 
 			fromDialog.show();
 		}
+		
+		
+		private void offlineRates() {
+
+			AlertDialog.Builder helpBuilder = new AlertDialog.Builder(this);
+			helpBuilder.setTitle("Internet is not available");
+			helpBuilder.setMessage("Rates could not be updated and may be out of date.");
+
+			helpBuilder.setPositiveButton("Thank you",
+					new DialogInterface.OnClickListener() {
+
+						public void onClick(DialogInterface dialog, int which) {
+							fromRate = new BigDecimal(currencies.get(fromSelected).getCurrencyvalue());
+		       				fromInput.setText("1.00");
+		       				toRate = new BigDecimal(currencies.get(toSelected).getCurrencyvalue());
+		       				calculateExchangeRate();
+						}
+					});
+			// Remember, create doesn't show the dialog
+			AlertDialog helpDialog = helpBuilder.create();
+			helpDialog.show();
+
+		}
+
 		public boolean selectNewFrom(int selected) {
 		    fromSelected = selected;
 		    fromList.setItemChecked(fromSelected, true);
@@ -298,7 +338,7 @@ public class MainActivity extends Activity {
 		    	//EditText fromInput = (EditText) findViewById(R.id.fromInput);
 			
 				fromRate = new BigDecimal(currencies.get(fromSelected).getCurrencyvalue());
-				String file = currencies.get(fromSelected).getContryname() + "_flag";
+				String file = currencies.get(fromSelected).getContryname().toLowerCase() + "_flag";
 				int resID = getResources().getIdentifier(file , "drawable", MainActivity.PACKAGE_NAME);
 				flag.setImageResource(resID);
 				calculateExchangeRate();
@@ -354,7 +394,7 @@ public class MainActivity extends Activity {
 					}
 		        }
 		        
-		        toAdapter = new RateAdapter(this, R.layout.list_row, currencies, getResources(), toSelected);
+		        toAdapter = new RateAdapter(this, R.layout.list_row, currencies, getApplicationContext().getResources(), toSelected);
 
 				toList.setAdapter(toAdapter);
 				toList.setItemChecked(toSelected, true);
@@ -389,7 +429,7 @@ public class MainActivity extends Activity {
 		    try {
 		    	button.setText(currencies.get(toSelected).getContryname());
 				fromRate = new BigDecimal(currencies.get(toSelected).getCurrencyvalue());
-				String file = currencies.get(toSelected).getCurrencyvalue() + "_flag";
+				String file = currencies.get(toSelected).getContryname().toLowerCase() + "_flag";
 				int resID = getResources().getIdentifier(file , "drawable", MainActivity.PACKAGE_NAME);
 				flag.setImageResource(resID);
 				calculateExchangeRate();

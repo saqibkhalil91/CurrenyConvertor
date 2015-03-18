@@ -13,7 +13,7 @@
     	     android:layout_below="@+id/fromSelectLabel"
     	     android:background="@drawable/custom_button"
     	     android:focusable="false"
-    	     android:text="Canadian Dollar"
+    	     android:text="HRK"
     	     android:textColor="@color/amostWhite" />
     	
     	 <TextView
@@ -54,7 +54,7 @@
              android:background="@drawable/custom_button"
              android:focusable="false"
              android:focusableInTouchMode="false"
-             android:text="U.S. dollar"
+             android:text="PLN"
              android:textColor="@color/amostWhite" />
 
          <TextView
@@ -131,7 +131,7 @@
              android:layout_alignTop="@+id/selectConvertFrom"
              android:layout_marginRight="15dp"
              android:layout_marginTop="3dp"
-             android:src="@drawable/cad_flag" />
+             android:src="@drawable/hrk_flag" />
 
          <ImageView
              android:id="@+id/toImage"
@@ -140,6 +140,6 @@
              android:layout_alignLeft="@+id/fromImage"
              android:layout_alignTop="@+id/selectConvertTo"
              android:layout_marginTop="3dp"
-             android:src="@drawable/usd_flag" />
+             android:src="@drawable/pln_flag" />
          
 </RelativeLayout>
