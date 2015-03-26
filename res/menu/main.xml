@@ -1,14 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
-    >
+    
      <item android:id="@+id/refresh"
           android:icon="@drawable/btn_refresh_normal"
            android:title="refresh"
-          android:showAsAction="ifRoom" />
+          android:showAsAction="always"
+          
+         />
 
 </menu>

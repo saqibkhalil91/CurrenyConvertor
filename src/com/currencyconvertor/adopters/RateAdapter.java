@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 
 
+
 import com.currencyconvertor.activities.MainActivity;
 import com.currencyconvertor.activities.R;
 import com.currencyconvertor.entities.Currency;
@@ -23,7 +24,7 @@ import com.currencyconvertor.entities.Currency;
 public class RateAdapter extends ArrayAdapter {
 	// we use the constructor allowing to provide a List of objects for the data
 	// to be binded.
-
+	private String[] contryFullName;
 	Resources res;
 	int selected;
 	Currency tempValues=null;
@@ -33,6 +34,7 @@ public class RateAdapter extends ArrayAdapter {
 		super(context, textViewResourceId, objects);
 		this.res = res;
 		this.selected = selected;
+		contryFullName = context.getResources().getStringArray(R.array.contriesName);
 	}
 
 	public void setSelected(int selected) {
@@ -57,11 +59,11 @@ public class RateAdapter extends ArrayAdapter {
 			// views
 			// we want to bind data to.
 			holder = new ViewHolder();
-			holder.label = (TextView) convertView.findViewById(R.id.label);
-			holder.flag = (ImageView) convertView.findViewById(R.id.flag);
-			holder.flag.setFocusable(false);
-			holder.flag.setFocusableInTouchMode(false);
-			holder.cbk = (CheckBox) convertView.findViewById(R.id.cbk);
+			holder.countryTextView = (TextView) convertView.findViewById(R.id.label);
+			holder.coutryFlagImage = (ImageView) convertView.findViewById(R.id.flag);
+			holder.coutryFlagImage.setFocusable(false);
+			holder.coutryFlagImage.setFocusableInTouchMode(false);
+			holder.countryCheckBox = (CheckBox) convertView.findViewById(R.id.cbk);
 			convertView.setTag(holder);
 		} else {
 			// Get the ViewHolder back to get fast access to the TextView
@@ -70,20 +72,20 @@ public class RateAdapter extends ArrayAdapter {
 		}
 		try{
 			
-			holder.label.setText(c.getContryname());
+			
 
-			 String mDrawableName = c.getContryname().toLowerCase() + "_flag";
+			 String mDrawableName = c.getContryName().toLowerCase() + "_flag";
 			 
 		        int resID = res.getIdentifier(mDrawableName , "drawable", MainActivity.PACKAGE_NAME);
-		        holder.flag.setImageResource(resID);
-		
+		        holder.coutryFlagImage.setImageResource(resID);
+		        holder.countryTextView.setText(contryFullName[position]);
 		// Bind the data efficiently with the holder.
 		
 	
 			if (position == selected) {
-				holder.cbk.setChecked(true);
+				holder.countryCheckBox.setChecked(true);
 			} else {
-				holder.cbk.setChecked(false);
+				holder.countryCheckBox.setChecked(false);
 			}
 		}catch(Exception e)
 		{
@@ -99,9 +101,9 @@ public class RateAdapter extends ArrayAdapter {
 	 *
 	 */
 	static class ViewHolder {
-		public CheckBox cbk;
-		public TextView label;
-		ImageView flag;
+		public CheckBox countryCheckBox;
+		public TextView countryTextView;
+		ImageView coutryFlagImage;
 	}
 
 }

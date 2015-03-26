@@ -21,11 +21,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.currencyconvertor.activities.R;
 import com.currencyconvertor.databases.DbHandler;
 import com.currencyconvertor.entities.Currency;
 
 
 import com.currencyconvertor.interfaces.JsonNotification;
+
+
 
 
 import android.app.ProgressDialog;
@@ -50,10 +53,10 @@ public class CurrencyConvertorAsyncTask extends AsyncTask<String, Void, Void> {
 	private Context context;
 	private String url;
 	private DbHandler db;
-	JsonNotification mJsonNotification;
+	private JsonNotification mJsonNotification;
 	private JSONObject mJSONObject;
 	private ProgressDialog mProgressDialog;
-
+	
 	public CurrencyConvertorAsyncTask(Context context) {
 		this.context = context;
 		db=new DbHandler(context);
@@ -69,6 +72,7 @@ public class CurrencyConvertorAsyncTask extends AsyncTask<String, Void, Void> {
 		mProgressDialog.setCancelable(false);
 		mProgressDialog.setTitle("Connecting");
 		mProgressDialog.setMessage("Please wait ...");
+	
 		mProgressDialog.show();
 		
 	}
@@ -109,8 +113,8 @@ public class CurrencyConvertorAsyncTask extends AsyncTask<String, Void, Void> {
 											Log.d("countryValue", countryValue);
 											Log.d("countryName", countryName);
 											Currency mCurrency = new Currency();
-											mCurrency.setContryname(countryName);
-											mCurrency.setCurrencyvalue(countryValue);
+											mCurrency.setContryName(countryName);
+											mCurrency.setCurrencyValue(countryValue);
 											mCurrency.setId(column_index);
 											db.updatedatemydatabase(mCurrency);
 											
@@ -152,7 +156,7 @@ public class CurrencyConvertorAsyncTask extends AsyncTask<String, Void, Void> {
 		mProgressDialog.dismiss();
 			try {
 			
-			this.mJsonNotification.setnotify();
+			this.mJsonNotification.setNotify();
 			 
 
 			

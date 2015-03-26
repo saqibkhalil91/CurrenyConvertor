@@ -2,18 +2,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >    
+    tools:context=".MainActivity" >  
+    
+     <Button
+    	     android:id="@+id/internetlable"
+    	     android:layout_width="wrap_content"
+    	     android:layout_height="wrap_content"
+    	     android:layout_alignLeft="@+id/fromSelectLabel"
+    	     android:layout_alignRight="@+id/fromInput"
+    	     android:visibility="gone"
+    	     android:layout_alignParentTop="true"
+    	     android:layout_marginTop="2dp"
+    	     android:background="@android:color/holo_red_dark"
+    	     android:focusable="false"
+    	     android:text="Internet is disable rates may outdated"
+    	     android:textColor="@color/amostWhite" />
     
     	 <Button
     	     android:id="@+id/selectConvertFrom"
     	     android:layout_width="wrap_content"
     	     android:layout_height="wrap_content"
+    	     
     	     android:layout_alignLeft="@+id/fromSelectLabel"
     	     android:layout_alignRight="@+id/fromInput"
     	     android:layout_below="@+id/fromSelectLabel"
     	     android:background="@drawable/custom_button"
     	     android:focusable="false"
-    	     android:text="HRK"
+    	     android:text="Croatia (HRK)"
     	     android:textColor="@color/amostWhite" />
     	
     	 <TextView
@@ -54,7 +69,7 @@
              android:background="@drawable/custom_button"
              android:focusable="false"
              android:focusableInTouchMode="false"
-             android:text="PLN"
+             android:text="Poland (PLN)"
              android:textColor="@color/amostWhite" />
 
          <TextView
@@ -115,8 +130,8 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:layout_alignLeft="@+id/fromAmountLabel"
-             android:layout_alignParentTop="true"
-             android:layout_marginTop="14dp"
+             android:layout_below="@+id/internetlable"
+             android:layout_marginTop="3dp"
              android:layout_marginBottom="10dp"
              android:focusable="false"
              android:focusableInTouchMode="false"

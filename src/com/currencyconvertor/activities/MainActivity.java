@@ -9,17 +9,31 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+
+
+
+
+
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import com.currencyconvertor.BroadcastReceiver.ConnectionChangeReceiver;
 import com.currencyconvertor.adopters.RateAdapter;
 import com.currencyconvertor.databases.DbHandler;
 import com.currencyconvertor.entities.Currency;
+import com.currencyconvertor.interfaces.InternetNotification;
 import com.currencyconvertor.interfaces.JsonNotification;
 import com.currencyconvertor.utilities.ConnectionDetector;
 import com.currencyconvertor.utilities.CurrencyConvertorAsyncTask;
+
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.NetworkInfo.State;
+import android.net.wifi.WifiConfiguration.Status;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -28,11 +42,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -68,7 +85,13 @@ public class MainActivity extends Activity {
 	private Dialog toDialog;
 	private RateAdapter fromAdapter;
 	private RateAdapter toAdapter;
-	private EditText answerText;
+	private String[] contryFullName;
+	private final String PREFS_NAME = "MyPrefsFile";
+	private SharedPreferences settings;
+	private static Button internetLable;
+	private Handler handler;
+	private String checkStatus;
+	private ConnectionChangeReceiver connectionReceiver;
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -76,11 +99,18 @@ public class MainActivity extends Activity {
 		setViews();
 		sendCurrencyApiRequest();
 		
+		
+		connectionReceiver = new ConnectionChangeReceiver();
+		connectionReceiver.registerHandler(handler, 1);
+		
+		//connectionReceiver.startListening(getActivity());
+		intrnt();
 		fromSelected = 0;
 		toSelected = 1;
 
 		final View view = this.findViewById(android.R.id.content);
 		final Activity activity = this;
+		
 		view.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			@Override
 			public void onGlobalLayout() {
@@ -113,6 +143,7 @@ public class MainActivity extends Activity {
 			final Button fromButton = (Button) findViewById(R.id.selectConvertFrom);
 	        fromButton.setOnClickListener(new View.OnClickListener() {
 	            public void onClick(View v) {
+	            	hideSoftKeyboard(activity);
 	            	showSelectFrom(v);
 	            }
 	        });
@@ -174,8 +205,39 @@ public class MainActivity extends Activity {
 	        });
 
 	}
+	 @Override
+	    protected void onResume() {
+	        super.onResume();
 
+	    }
+	 private void intrnt()
+	 {
+		 
+		 handler = new Handler() {
+			  public void handleMessage(android.os.Message msg) {
+				  msg.toString();
+				
+					
+		//Log.d("jugar", msg.toString());
+			  
+			  /* if (msg.arg1) {
+				   internetLable.setVisibility(View.VISIBLE);
+			   }
+			   if() {
+				   internetLable.setVisibility(View.GONE);
+			   }*/
 
+			  };
+		 };
+		   
+	 }
+	
+	 private void initializeBroadcast()
+	 {
+		  Intent intent = new Intent();
+		  //intent.setMainActivityHandler(this);
+		  sendBroadcast(intent);
+	 }
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -189,7 +251,12 @@ public class MainActivity extends Activity {
 		
 		case R.id.refresh:
 			sendCurrencyApiRequest();
-			
+			ConnectionDetector cd = new ConnectionDetector(this);
+			boolean checkingConnection = cd.isConnectingToInternet();
+			if(checkingConnection==true)
+			{
+				internetLable.setVisibility(View.GONE);
+			}
 			break;
 
 		default:
@@ -199,9 +266,15 @@ public class MainActivity extends Activity {
 	
 
 	private void setViews() {
+		
 			db = new DbHandler(this);
 			currencies = new ArrayList<Currency>();
 			PACKAGE_NAME = getApplicationContext().getPackageName();
+			SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+			 internetLable = (Button)findViewById(R.id.internetlable);
+			 contryFullName = getResources().getStringArray(R.array.contriesName);
+		
+					
 		}
 
 		private void sendCurrencyApiRequest() {
@@ -215,9 +288,11 @@ public class MainActivity extends Activity {
 				currencyConvertorApi.setApiResulListener(new JsonNotification() {
 					
 					@Override
-					public void setnotify() {
+					public void setNotify() {
 						// TODO Auto-generated method stub
 						currencies = db.getAllCurrencies();
+						internetLable.setVisibility(View.GONE);
+						calculateExchangeRate();
 					}
 				});
 			}
@@ -227,7 +302,17 @@ public class MainActivity extends Activity {
 			}
 		}
 
-		
+		public static void internetLableBar(String val)
+		{
+			if(val.equals("Wifi enabled"))
+			{
+				internetLable.setVisibility(View.VISIBLE);
+			}else if(val.equals("Not connected to Internet"))
+			{
+				internetLable.setVisibility(View.GONE);
+			}
+			
+		}
 		
 		public void showSelectFrom(View v) {
 			if (fromDialog == null) {
@@ -280,11 +365,23 @@ public class MainActivity extends Activity {
 
 						public void onClick(DialogInterface dialog, int which) {
 							currencies = db.getAllCurrencies();
-							fromRate = new BigDecimal(currencies.get(fromSelected).getCurrencyvalue());
-		       				fromInput.setText("1.00");
-		       				toRate = new BigDecimal(currencies.get(toSelected).getCurrencyvalue());
-		       				answerText.setText("0.54");
-		       				calculateExchangeRate();
+							if(currencies.get(0).getCurrencyValue().equals("0")){
+								internetLable.setVisibility(View.VISIBLE);
+								 internetLable.setText("Rates are updated when deveice will be connected to internet");
+								 fromInput.setText("1.00");
+							
+							}else 
+							{
+								internetLable.setVisibility(View.VISIBLE);
+								internetLable.setText("Internet is disable rates may outdated");
+								fromRate = new BigDecimal(currencies.get(fromSelected).getCurrencyValue());
+			       				fromInput.setText("1.00");
+			       				toRate = new BigDecimal(currencies.get(toSelected).getCurrencyValue());
+			       				
+			       				calculateExchangeRate();
+							}
+							
+		       				
 						}
 					});
 			// Remember, create doesn't show the dialog
@@ -303,11 +400,11 @@ public class MainActivity extends Activity {
 		    ImageView flag = (ImageView) findViewById(R.id.fromImage);
 		    
 		    try {
-		    	button.setText(currencies.get(fromSelected).getContryname());
+		    	button.setText(contryFullName[fromSelected]);
 		    	//EditText fromInput = (EditText) findViewById(R.id.fromInput);
 			
-				fromRate = new BigDecimal(currencies.get(fromSelected).getCurrencyvalue());
-				String file = currencies.get(fromSelected).getContryname().toLowerCase() + "_flag";
+				fromRate = new BigDecimal(currencies.get(fromSelected).getCurrencyValue());
+				String file = currencies.get(fromSelected).getContryName().toLowerCase() + "_flag";
 				int resID = getResources().getIdentifier(file , "drawable", MainActivity.PACKAGE_NAME);
 				flag.setImageResource(resID);
 				calculateExchangeRate();
@@ -322,13 +419,13 @@ public class MainActivity extends Activity {
 
 		public void calculateExchangeRate() {
 			try {
-				fromRate = new BigDecimal(currencies.get(fromSelected).getCurrencyvalue());
-				toRate = new BigDecimal(currencies.get(toSelected).getCurrencyvalue());
+				fromRate = new BigDecimal(currencies.get(fromSelected).getCurrencyValue());
+				toRate = new BigDecimal(currencies.get(toSelected).getCurrencyValue());
 				EditText fromInput = (EditText) findViewById(R.id.fromInput);
 				double value = Double.parseDouble(fromInput.getText().toString());
 				double exchangeRate =  toRate.doubleValue() /fromRate.doubleValue();
 				double answer = value * exchangeRate;
-			 answerText = (EditText) findViewById(R.id.answer);
+				EditText answerText = (EditText) findViewById(R.id.answer);
 				answerText.setText(String.format("%.2f", answer));
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -381,9 +478,9 @@ public class MainActivity extends Activity {
 		    ImageView flag = (ImageView) findViewById(R.id.toImage);
 		    
 		    try {
-		    	button.setText(currencies.get(toSelected).getContryname());
-				fromRate = new BigDecimal(currencies.get(toSelected).getCurrencyvalue());
-				String file = currencies.get(toSelected).getContryname().toLowerCase() + "_flag";
+		    	button.setText(contryFullName[toSelected]);
+				fromRate = new BigDecimal(currencies.get(toSelected).getCurrencyValue());
+				String file = currencies.get(toSelected).getContryName().toLowerCase() + "_flag";
 				int resID = getResources().getIdentifier(file , "drawable", MainActivity.PACKAGE_NAME);
 				flag.setImageResource(resID);
 				calculateExchangeRate();
@@ -401,10 +498,10 @@ public class MainActivity extends Activity {
 			
 			// Swap
 			try {
-				String file =currencies.get(fromSelected).getContryname().toLowerCase() + "_flag";
+				String file =currencies.get(fromSelected).getContryName().toLowerCase() + "_flag";
 				int resID = getResources().getIdentifier(file , "drawable", MainActivity.PACKAGE_NAME);
 				toFlag.setImageResource(resID);
-				file = currencies.get(toSelected).getContryname().toLowerCase() + "_flag";
+				file = currencies.get(toSelected).getContryName().toLowerCase() + "_flag";
 				resID = getResources().getIdentifier(file , "drawable", MainActivity.PACKAGE_NAME);
 				fromFlag.setImageResource(resID);
 			} catch (Exception e) {

@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Currrency Converter</string>
+    <string name="app_name">Currency Converter</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+     <string-array name="contriesName">
+        <item>Croatia (HRK)</item>
+        <item>Poland (PLN)</item>
+        <item>Turkey (TRY)</item>
+        <item>England (GBP)</item>
+         <item>Bulgaria (BGN)</item>
+        <item>Sweden (SEK)</item>
+        <item>Norway (NOK)</item>
+        <item>Denmark (DKK)</item>
+    </string-array>
+    
 
 </resources>

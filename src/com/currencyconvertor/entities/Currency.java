@@ -1,11 +1,7 @@
 package com.currencyconvertor.entities;
-
-import android.content.Context;
-
-
 public class Currency {
-	private String contryname;
-	private String currencyvalue;
+	private String contryName;
+	private String currencyValue;
 	
 	private int id;
 	
@@ -15,17 +11,17 @@ public class Currency {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getContryname() {
-		return contryname;
+	public String getContryName() {
+		return contryName;
 	}
-	public void setContryname(String contryname) {
-		this.contryname = contryname;
+	public void setContryName(String contryName) {
+		this.contryName = contryName;
 	}
-	public String getCurrencyvalue() {
-		return currencyvalue;
+	public String getCurrencyValue() {
+		return currencyValue;
 	}
-	public void setCurrencyvalue(String currencyvalue) {
-		this.currencyvalue = currencyvalue;
+	public void setCurrencyValue(String currencyValue) {
+		this.currencyValue = currencyValue;
 	}
 	
 

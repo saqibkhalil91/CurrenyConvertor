@@ -16,19 +16,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHandler extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "currency.db";
-	public static final String Table_currency_convertor = "currency_convertor";
+	public static final String TABLE_CURRENCY_CONVERTER = "currency_convertor";
 	public static final String COLUMN_ID = "_id";
-	public static final String COLUMN_Country_Name = "Country_Name";
-	public static final String COLUMN_Currency_Value = "Country_value";
+	public static final String COLUMN_COUNTRY_NAME = "Country_Name";
+	public static final String COLUMN_CURRENCY_VALUE = "Country_value";
 
 	private SQLiteDatabase database;
 	private Context context;
 
 	// Database creation sql statement
 	private static final String DATABASE_CREATE = "create table "
-			+ Table_currency_convertor + "(" + COLUMN_ID
-			+ " integer primary key autoincrement, " + COLUMN_Country_Name
-			+ " text not null," + COLUMN_Currency_Value + " text not null);";
+			+ TABLE_CURRENCY_CONVERTER + "(" + COLUMN_ID
+			+ " integer primary key autoincrement, " + COLUMN_COUNTRY_NAME
+			+ " text not null," + COLUMN_CURRENCY_VALUE + " text not null);";
 
 	public DbHandler(Context context) {
 		super(context, DATABASE_NAME, null, 1);
@@ -45,10 +45,10 @@ public class DbHandler extends SQLiteOpenHelper {
 		for (int i = 0; i < 8; i++) {
 			ContentValues cv = new ContentValues();
 
-			cv.put(COLUMN_Country_Name, "countryname");
-			cv.put(COLUMN_Currency_Value, "0");
+			cv.put(COLUMN_COUNTRY_NAME, "countryname");
+			cv.put(COLUMN_CURRENCY_VALUE, "0");
 
-			long result = db.insert(Table_currency_convertor, null, cv);
+			long result = db.insert(TABLE_CURRENCY_CONVERTER, null, cv);
 		}
 
 	}
@@ -56,7 +56,7 @@ public class DbHandler extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Auto-generated method stub
-		db.execSQL("DROP TABLE IF EXISTS " + Table_currency_convertor);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CURRENCY_CONVERTER);
 		onCreate(db);
 
 	}
@@ -72,10 +72,10 @@ public class DbHandler extends SQLiteOpenHelper {
 	public void updatedatemydatabase(Currency c) {
 		openConnection();
 		ContentValues update = new ContentValues();
-		update.put(COLUMN_Country_Name, c.getContryname());
-		update.put(COLUMN_Currency_Value, c.getCurrencyvalue());
+		update.put(COLUMN_COUNTRY_NAME, c.getContryName());
+		update.put(COLUMN_CURRENCY_VALUE, c.getCurrencyValue());
 
-		database.update(Table_currency_convertor, update,
+		database.update(TABLE_CURRENCY_CONVERTER, update,
 				COLUMN_ID + "=" + c.getId(), null);
 		closeConnection();
 
@@ -89,18 +89,18 @@ public class DbHandler extends SQLiteOpenHelper {
 		Currency mCurrency;
 		
 		//String col[] = new String[]{colId,colfirstName,collastName,colEmail,colDOB,colAddress};
-		Cursor c = database.query(Table_currency_convertor, null, null, null, null, null, null);
+		Cursor c = database.query(TABLE_CURRENCY_CONVERTER, null, null, null, null, null, null);
 		int colid = c.getColumnIndex(COLUMN_ID);
-		int mCOLUMN_Country_Name=c.getColumnIndex(COLUMN_Country_Name);
-		int mCOLUMN_Currency_Value=c.getColumnIndex(COLUMN_Currency_Value);
+		int mCOLUMN_COUNTRY_NAME=c.getColumnIndex(COLUMN_COUNTRY_NAME);
+		int mCOLUMN_CURRENCY_VALUE=c.getColumnIndex(COLUMN_CURRENCY_VALUE);
 
 	
 		while(c.moveToNext())
 		{
-			mCurrency = new  Currency();//(c.getInt(colid),c.getString(mCOLUMN_Country_Name),c.getString(mCOLUMN_Currency_Value),context );
+			mCurrency = new  Currency();//(c.getInt(colid),c.getString(mCOLUMN_COUNTRY_NAME),c.getString(mCOLUMN_CURRENCY_VALUE),context );
 			mCurrency.setId(c.getInt(colid));
-			mCurrency.setContryname(c.getString(mCOLUMN_Country_Name));
-			mCurrency.setCurrencyvalue(c.getString(mCOLUMN_Currency_Value));
+			mCurrency.setContryName(c.getString(mCOLUMN_COUNTRY_NAME));
+			mCurrency.setCurrencyValue(c.getString(mCOLUMN_CURRENCY_VALUE));
 			currencies.add(mCurrency);	
 		}
 		closeConnection();
