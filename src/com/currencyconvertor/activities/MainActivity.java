@@ -15,10 +15,12 @@ import java.util.List;
 
 
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.currencyconvertor.BroadcastReceiver.ConnectionChangeReceiver;
+
+import com.currencyconvertor.BroadcastReceiver.NetworkConnectivityListener;
 import com.currencyconvertor.adopters.RateAdapter;
 import com.currencyconvertor.databases.DbHandler;
 import com.currencyconvertor.entities.Currency;
@@ -86,20 +88,24 @@ public class MainActivity extends Activity {
 	private RateAdapter fromAdapter;
 	private RateAdapter toAdapter;
 	private String[] contryFullName;
-	private final String PREFS_NAME = "MyPrefsFile";
+	private  Button internetLable;
+	Context mContex;
+	public NetworkConnectivityListener mConnectivityListener;
+
+	private com.currencyconvertor.BroadcastReceiver.NetworkConnectivityListener.State mState; 
 	
-	private static Button internetLable;
-	private Handler handler;
-	private String checkStatus;
-	
-	private ConnectionChangeReceiver connectionReceiver;
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		setViews();
 		sendCurrencyApiRequest();
-		connectionReceiver = new ConnectionChangeReceiver();
+		mContex = getApplication();
+		
+		mConnectivityListener = new NetworkConnectivityListener();
+		mConnectivityListener.registerHandler(mNetworkHandler, 1);
+		  mConnectivityListener.startListening(mContex );
+	
 		fromSelected = 0;
 		toSelected = 1;
 
@@ -200,25 +206,53 @@ public class MainActivity extends Activity {
 	        });
 
 	}
+	 @SuppressLint("HandlerLeak")
+	
+	public Handler mNetworkHandler = new Handler() {
+			
+
+			public void handleMessage(android.os.Message msg) {
+
+			 mState = mConnectivityListener.getState();
+			   String mReason = mConnectivityListener.getReason();
+				
+			if (mState.toString().equals("CONNECTED")) {
+				internetLable.setVisibility(View.GONE);
+				Log.d("CONNECTED true", State.CONNECTED+"");
+				Log.d("CONNECTED true", mState+"");
+			   
+			   }
+			
+			   if (mState.toString().equals("NOT_CONNECTED")) {
+				   internetLable.setVisibility(View.VISIBLE);
+				   Log.d("DISCONNECTED true", State.DISCONNECTED+"");
+					Log.d("DISCONNECTED true", mState+"");
+			   }
+			   Log.d("UNKNOWN", State.UNKNOWN+"");
+			   if (mState.toString().equals("UNKNOWN")) {
+				   internetLable.setVisibility(View.VISIBLE);
+				   Log.d("UNKNOWN true", State.UNKNOWN+"");
+					Log.d("UNKNOWN true", mState+"");
+			   }
+
+			   if (mReason != null) {
+			   }
+			  };
+
+			 };
+				
+		
+	
 	 @Override
 	    protected void onResume() {
 	        super.onResume();
 
 	    }
 	
-	public void internetLableBar(int i)
-	 {
-		if (i==0) {
-		   internetLable.setVisibility(View.VISIBLE);
-	   }
-	   if(i==1) {
-		   internetLable.setVisibility(View.GONE);
-	   }
 	
+
+
 		
-		   
-	 }
-	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
