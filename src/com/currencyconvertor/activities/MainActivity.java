@@ -87,10 +87,11 @@ public class MainActivity extends Activity {
 	private RateAdapter toAdapter;
 	private String[] contryFullName;
 	private final String PREFS_NAME = "MyPrefsFile";
-	private SharedPreferences settings;
+	
 	private static Button internetLable;
 	private Handler handler;
 	private String checkStatus;
+	
 	private ConnectionChangeReceiver connectionReceiver;
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,13 +99,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		setViews();
 		sendCurrencyApiRequest();
-		
-		
 		connectionReceiver = new ConnectionChangeReceiver();
-		connectionReceiver.registerHandler(handler, 1);
-		
-		//connectionReceiver.startListening(getActivity());
-		intrnt();
 		fromSelected = 0;
 		toSelected = 1;
 
@@ -210,34 +205,21 @@ public class MainActivity extends Activity {
 	        super.onResume();
 
 	    }
-	 private void intrnt()
+	
+	public void internetLableBar(int i)
 	 {
-		 
-		 handler = new Handler() {
-			  public void handleMessage(android.os.Message msg) {
-				  msg.toString();
-				
-					
-		//Log.d("jugar", msg.toString());
-			  
-			  /* if (msg.arg1) {
-				   internetLable.setVisibility(View.VISIBLE);
-			   }
-			   if() {
-				   internetLable.setVisibility(View.GONE);
-			   }*/
-
-			  };
-		 };
+		if (i==0) {
+		   internetLable.setVisibility(View.VISIBLE);
+	   }
+	   if(i==1) {
+		   internetLable.setVisibility(View.GONE);
+	   }
+	
+		
 		   
 	 }
 	
-	 private void initializeBroadcast()
-	 {
-		  Intent intent = new Intent();
-		  //intent.setMainActivityHandler(this);
-		  sendBroadcast(intent);
-	 }
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -270,8 +252,7 @@ public class MainActivity extends Activity {
 			db = new DbHandler(this);
 			currencies = new ArrayList<Currency>();
 			PACKAGE_NAME = getApplicationContext().getPackageName();
-			SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-			 internetLable = (Button)findViewById(R.id.internetlable);
+			internetLable = (Button)findViewById(R.id.internetlable);
 			 contryFullName = getResources().getStringArray(R.array.contriesName);
 		
 					
@@ -302,17 +283,7 @@ public class MainActivity extends Activity {
 			}
 		}
 
-		public static void internetLableBar(String val)
-		{
-			if(val.equals("Wifi enabled"))
-			{
-				internetLable.setVisibility(View.VISIBLE);
-			}else if(val.equals("Not connected to Internet"))
-			{
-				internetLable.setVisibility(View.GONE);
-			}
-			
-		}
+		
 		
 		public void showSelectFrom(View v) {
 			if (fromDialog == null) {
@@ -535,6 +506,7 @@ public class MainActivity extends Activity {
 		    InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
 		    inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
 		}
+		
 		 @Override
 		    public void onConfigurationChanged(Configuration newConfig) {
 		        super.onConfigurationChanged(newConfig);

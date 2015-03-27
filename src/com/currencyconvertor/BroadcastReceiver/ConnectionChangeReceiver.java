@@ -1,6 +1,7 @@
 package com.currencyconvertor.BroadcastReceiver;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import com.currencyconvertor.activities.MainActivity;
 import com.currencyconvertor.utilities.NetworkUtil;
@@ -20,26 +21,38 @@ public  class ConnectionChangeReceiver extends BroadcastReceiver{
   HashMap< Handler, Integer> mhash;
   Message msg;
   Handler handler;
-
+  private HashMap<Handler, Integer> mHandlers = new HashMap<Handler, Integer>();
 	@Override
 	public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub
 		    status = NetworkUtil.getConnectivityStatus(context);
-		
-		    mhash= new HashMap<Handler, Integer>();
-		    Message msg = Message.obtain(); // Creates an new Message instance
-			   msg.obj = status+""; // Put the string into Message, into "obj" field.
-			 this.handler.sendMessage(msg);
+		    MainActivity obj = new MainActivity();
+		    obj.internetLableBar(status);
+		   /*  Iterator<Handler> it = mHandlers.keySet().iterator();
+			while (it.hasNext()) {
+				Handler target = it.next();
+				Message message = Message.obtain(target, mHandlers.get(target));
+				Log.d("check", "not getting");
+				target.sendMessage(message);
+			}*/
 			
-		  Log.d("status", status+"");
+		   
 	}
 	
-	public void registerHandler(Handler handler, int i) {
-		// TODO Auto-generated method stub
-			this.handler = handler;
-		
+	public void registerHandler(Handler target,int what) {
+		//mHandlers.put(target, what);
+		mHandlers.put(target, what);
 
 	}
+	public void unregisterHandler(Handler target) {
+		mHandlers.remove(target);
+	}
+
+	public void unregisterALLHandlers() {
+		mHandlers.clear();
+	}
+
+	
 	
 	
 	 
